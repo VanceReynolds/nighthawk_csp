@@ -1,4 +1,5 @@
 """control dependencies to support CRUD app routes and APIs"""
+import datetime
 from flask import Blueprint, render_template, request, url_for, redirect, jsonify, make_response
 from flask_login import login_required
 
@@ -51,7 +52,17 @@ def crud_login():
     if request.form:
         email = request.form.get("email")
         password = request.form.get("password")
-        if login(email, password):       # zero index [0] used as email is a tuple
+        remember = request.form.get("remember")
+        # in order to forget me we must include seconds until we are forgotten
+        if (remember is None or remember == False):
+            remember_me = False
+            duration = datetime.timedelta(seconds=180) 
+        # forget us after a day anyway so it is easier to test tomorrow
+        else:
+            remember_me = True
+            duration = datetime.timedelta(days=1)
+
+        if login(email, password, remember_me, duration):       # zero index [0] used as email is a tuple
             return redirect(url_for('crud.crud'))
 
     # if not logged in, show the login page

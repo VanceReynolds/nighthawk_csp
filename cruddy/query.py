@@ -74,13 +74,13 @@ def is_user(email, password):
 
 
 # login user based off of email and password
-def login(email, password):
+def login(email, password, remember, duration):
     # sequence of checks
     if current_user.is_authenticated:  # return true if user is currently logged in
         return True
     elif is_user(email, password):  # return true if email and password match
         user_row = user_by_email(email)
-        login_user(user_row)  # sets flask login_user
+        login_user(user_row, remember, duration)  # sets flask login_user
         return True
     else:  # default condition is any failure, most likely existing user and password or email mismatch
         print ("Invalid username and/or password")
