@@ -70,6 +70,7 @@ def crud_authorize():
         email = request.form.get("email")
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")           # password should be verified
+        # HACK: Verify passwords match
         # we ask for password twice so verify it and if not matching console error and try again
         if (password1 != password2):
             print("Please provide matching passwords")
@@ -79,6 +80,11 @@ def crud_authorize():
     # show the auth user page if the above fails for some reason
     return render_template("authorize.html")
 
+# CRUD logout
+@app_crud.route('/logout/', methods=["POST"])
+def logout():
+    logout_user()
+    return render_template('login.html')
 
 # CRUD create/add
 @app_crud.route('/create/', methods=["POST"])
@@ -119,6 +125,7 @@ def update():
         if po is not None:
             po.update(name)
     return redirect(url_for('crud.crud'))
+
 
 
 # CRUD delete

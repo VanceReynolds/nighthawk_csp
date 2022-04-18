@@ -105,6 +105,7 @@ def user_email_mismatch(username, email):
 
 # Authorise new user requires user_name, email, password
 def authorize(name, email, password, phone="1234567890"):
+    # HACK: Verify email not already in user by another registered user
     if user_email_mismatch(name, email):
         print ("Email already in user by another registered user ")
         return False

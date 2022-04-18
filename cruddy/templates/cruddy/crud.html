@@ -72,6 +72,18 @@
 
 
     <div class="container bg-secondary py-4">
+
+        <div class="col-md-3">
+            <div class="p-5 mb-4 bg-light text-dark rounded-3">
+                <h2>Logout</h2>
+                <form method="POST" ID="logout" action={{url_for( 'crud.logout')}}>
+                    <tr>
+                        <td><input type="submit" value="Logout"></td>
+                    </tr>
+                </form>
+            </div>
+        </div>
+
         <div class="p-5 mb-4 bg-light text-dark rounded-3">
             <h2>Create a new record</h2>
             <form method="POST" ID="create" action={{url_for( 'crud.create')}}>
