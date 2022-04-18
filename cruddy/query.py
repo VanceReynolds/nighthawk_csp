@@ -83,6 +83,7 @@ def login(email, password):
         login_user(user_row)  # sets flask login_user
         return True
     else:  # default condition is any failure, most likely existing user and password or email mismatch
+        print ("Invalid username and/or password")
         return False
 
 
@@ -97,18 +98,20 @@ def user_loader(user_id):
 def user_email_mismatch(username, email):
     # query email and return user record
     user_record = user_by_email(email)
-    if user_record.name != username:
+    # if user is registered to this email and names do not match return True
+    if user_record and user_record.name != username:
         return True
     else:
         return False
 
 
 # Authorise new user requires user_name, email, password
-def authorize(name, email, password, phone="1234567890"):
+def authorize(name, email, password, phone):
     # HACK: Verify email not already in user by another registered user
     if user_email_mismatch(name, email):
         print ("Email already in user by another registered user ")
         return False
+    # check for existing user - if user email and password already registered 
     if is_user(email, password):
         return False
     else:
@@ -122,10 +125,6 @@ def authorize(name, email, password, phone="1234567890"):
         auth_user.create()
         return True
 
-
-# logout user
-def logout():
-    logout_user()  # removes login state of user from session
 
 
 # Test some queries from implementations above

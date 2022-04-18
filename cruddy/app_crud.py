@@ -75,7 +75,7 @@ def crud_authorize():
         if (password1 != password2):
             print("Please provide matching passwords")
             return render_template("authorize.html")
-        if authorize(user_name, email, password1):    # zero index [0] used as user_name and email are type tuple
+        if authorize(user_name, email, password1, phone_number):    
             return redirect(url_for('crud.crud_login'))
     # show the auth user page if the above fails for some reason
     return render_template("authorize.html")
