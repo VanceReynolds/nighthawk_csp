@@ -62,13 +62,15 @@ def user_by_email(email):
     """finds User in table matching email """
     return Users.query.filter_by(email=email).first()
 
-
 # check credentials in database
 def is_user(email, password):
     # query email and return user record
     user_record = user_by_email(email)
     # if user record found, check if password is correct
-    return user_record and Users.is_password_match(user_record, password)
+    pass_match = user_record and Users.is_password_match(user_record, password)
+    if pass_match == False:
+        print ("Error: invalid password for registered user")
+    return pass_match
 
 
 # login user based off of email and password
@@ -80,7 +82,7 @@ def login(email, password):
         user_row = user_by_email(email)
         login_user(user_row)  # sets flask login_user
         return True
-    else:  # default condition is any failure
+    else:  # default condition is any failure, most likely existing user and password or email mismatch
         return False
 
 
@@ -92,9 +94,20 @@ def user_loader(user_id):
         return Users.query.get(user_id)
     return None
 
+def user_email_mismatch(username, email):
+    # query email and return user record
+    user_record = user_by_email(email)
+    if user_record.name != username:
+        return True
+    else:
+        return False
+
 
 # Authorise new user requires user_name, email, password
-def authorize(name, email, password):
+def authorize(name, email, password, phone="1234567890"):
+    if user_email_mismatch(name, email):
+        print ("Email already in user by another registered user ")
+        return False
     if is_user(email, password):
         return False
     else:
@@ -102,7 +115,7 @@ def authorize(name, email, password):
             name=name,
             email=email,
             password=password,
-            phone="1234567890"  # this should be added to authorize.html
+            phone=phone  
         )
         # encrypt their password and add it to the auth_user object
         auth_user.create()
@@ -116,7 +129,6 @@ def logout():
 
 # Test some queries from implementations above
 if __name__ == "__main__":
-
     # Look at table
     print("Print all at start")
     for user in users_all():
@@ -152,3 +164,4 @@ if __name__ == "__main__":
     # Clean up data from run, so it can run over and over the same
     user_record = user_by_email(email1)
     user_record.delete()
+

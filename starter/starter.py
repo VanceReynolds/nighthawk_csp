@@ -1,6 +1,7 @@
-import requests
+import requests 
 from flask import Blueprint, render_template, request
-from algorithm.image import image_data
+
+from PIL import Image 
 
 from pathlib import \
     Path  # https://medium.com/@ageitgey/python-3-quick-tip-the-easy-way-to-deal-with-file-paths-on-windows-mac-and
@@ -32,7 +33,7 @@ def binary():
 @app_starter.route('/rgb/')
 def rgb():
     path = Path(app_starter.root_path) / "static" / "img"
-    return render_template('rgb.html', images=image_data(path))
+    return render_template('rgb.html', images=Image.from_path(path))
 
 
 @app_starter.route('/joke', methods=['GET', 'POST'])

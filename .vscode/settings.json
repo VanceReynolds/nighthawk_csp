@@ -1,0 +1,7 @@
+
+{
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/algorithm/:${workspaceFolder}/hacks/:${workspaceFolder}/cruddy/:${workspaceFolder}",
+        "./algorithm:./api:./cruddy:./starter"
+    ]
+}

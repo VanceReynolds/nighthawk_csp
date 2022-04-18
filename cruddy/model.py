@@ -53,7 +53,7 @@ class Users(UserMixin, db.Model):
 
     # CRUD update: updates users name, password, phone
     # returns self
-    def update(self, name, password="", phone=""):
+    def update(self, name="", password="", phone=""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name

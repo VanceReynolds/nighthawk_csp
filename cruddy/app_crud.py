@@ -18,12 +18,22 @@ app_crud = Blueprint('crud', __name__,
 """
 
 
-# Default URL for Blueprint
+# If you decorate a view(route) with this, it will ensure that the current user is logged in and authenticated before calling the actual view. 
+# (If they are not, it calls the LoginManager.unauthorized callback.). 
+# Use this example for Hack #3.
 @app_crud.route('/')
 @login_required  # Flask-Login uses this decorator to restrict acess to logged in users
 def crud():
     """obtains all Users from table and loads Admin Form"""
     return render_template("crud.html", table=users_all())
+
+
+# Unauthorised users do not get access to the SQL CRUD
+# Flask-Login directs unauthorised users to this unauthorized_handler
+@login_manager.unauthorized_handler
+def unauthorized():
+    """Redirect unauthorized users to Login page."""
+    return redirect(url_for('crud.crud_login'))
 
 
 # Flask-Login directs unauthorised users to this unauthorized_handler
@@ -37,6 +47,7 @@ def unauthorized():
 @app_crud.route('/login/', methods=["GET", "POST"])
 def crud_login():
     # obtains form inputs and fulfills login requirements
+
     if request.form:
         email = request.form.get("email")
         password = request.form.get("password")
@@ -46,16 +57,23 @@ def crud_login():
     # if not logged in, show the login page
     return render_template("login.html")
 
-
+# Note this code is bad. It is handling PII (username, password, phone, email) without encryption
+# It would be better if we used OAuth2 and did not need to see or pass around secrets
+#
 @app_crud.route('/authorize/', methods=["GET", "POST"])
 def crud_authorize():
     # check form inputs and creates user
     if request.form:
         # validation should be in HTML
         user_name = request.form.get("user_name")
+        phone_number = request.form.get("phone_number")
         email = request.form.get("email")
         password1 = request.form.get("password1")
-        password2 = request.form.get("password1")           # password should be verified
+        password2 = request.form.get("password2")           # password should be verified
+        # we ask for password twice so verify it and if not matching console error and try again
+        if (password1 != password2):
+            print("Please provide matching passwords")
+            return render_template("authorize.html")
         if authorize(user_name, email, password1):    # zero index [0] used as user_name and email are type tuple
             return redirect(url_for('crud.crud_login'))
     # show the auth user page if the above fails for some reason
