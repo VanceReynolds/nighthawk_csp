@@ -26,7 +26,7 @@ app_crud = Blueprint('crud', __name__,
 @login_required  # Flask-Login uses this decorator to restrict acess to logged in users
 def crud():
     """obtains all Users from table and loads Admin Form"""
-    return render_template("crud.html", table=users_all())
+    return render_template("crud.html", table=users_all(), username=str(current_user.name))
 
 
 # Unauthorised users do not get access to the SQL CRUD
@@ -62,8 +62,9 @@ def crud_login():
             remember_me = True
             duration = datetime.timedelta(days=1)
 
+        # pass in the name of the logged in user so it can be shown
         if login(email, password, remember_me, duration):       # zero index [0] used as email is a tuple
-            return redirect(url_for('crud.crud'))
+            return redirect(url_for('crud.crud', username=str(current_user.name)))
 
     # if not logged in, show the login page
     return render_template("login.html")
@@ -109,7 +110,7 @@ def create():
             request.form.get("phone")
         )
         po.create()
-    return redirect(url_for('crud.crud'))
+    return redirect(url_for('crud.crud', username=str(current_user.name)))
 
 
 # CRUD read
@@ -135,7 +136,7 @@ def update():
         po = user_by_id(userid)
         if po is not None:
             po.update(name)
-    return redirect(url_for('crud.crud'))
+    return redirect(url_for('crud.crud', username=str(current_user.name)))
 
 
 
@@ -148,7 +149,7 @@ def delete():
         po = user_by_id(userid)
         if po is not None:
             po.delete()
-    return redirect(url_for('crud.crud'))
+    return redirect(url_for('crud.crud', username=str(current_user.name)))
 
 
 # Search Form
