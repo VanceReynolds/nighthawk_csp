@@ -1,6 +1,7 @@
 <!-- This page is illustrative and contains ideas about HTML formatting -->
 <!doctype html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -13,24 +14,29 @@
 
     <!-- Common style for site -->
     {% block colors %}
-        <link rel="stylesheet" type="text/css" href={{  url_for("static", filename="scss/custom.css", version='208') }}>
-    {% endblock %}
+    <link rel="stylesheet" type="text/css" href={{ url_for( "static", filename="scss/custom.css" , version='208' ) }}> {% endblock %}
 
     <!-- Use this block for page specific meta data -->
     {% block meta %}
-        <title>Nighthawk Coding Society</title>
+    <title>Nighthawk Coding Society</title>
     {% endblock %}
 </head>
+
 <body>
     {% include "fragments/navbar.html" %}
 
     <!-- CONTENT Block, utilize this block for page specific content  -->
     {% block content %}
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        var username = prams.get('username');
+        print('username: ' + username);
+    </script>
     {% endblock %}
-
     <!-- Footer Code -->
     {% include "fragments/footer.html" %}
     <!-- Bootstrap 5.0 Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
+
 </html>

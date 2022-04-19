@@ -37,13 +37,6 @@ def unauthorized():
     return redirect(url_for('crud.crud_login'))
 
 
-# Flask-Login directs unauthorised users to this unauthorized_handler
-@login_manager.unauthorized_handler
-def unauthorized():
-    """Redirect unauthorized users to Login page."""
-    return redirect(url_for('crud.crud_login'))
-
-
 # if login url, show phones table only
 @app_crud.route('/login/', methods=["GET", "POST"])
 def crud_login():
