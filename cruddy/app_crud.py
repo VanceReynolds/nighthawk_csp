@@ -36,12 +36,21 @@ def unauthorized():
     """Redirect unauthorized users to Login page."""
     return redirect(url_for('crud.crud_login'))
 
+# return currently logged in username or anonymous
+def get_login_username():
+    if current_user is None or current_user.is_anonymous == True:
+        return "anonymous"
+    else:
+        return str(current_user.name)
 
 # if login url, show phones table only
 @app_crud.route('/login/', methods=["GET", "POST"])
 def crud_login():
-    # obtains form inputs and fulfills login requirements
+    # if there is a user logged in when we get here, log them out
+    if current_user is not None and current_user.is_anonymous == False:
+        logout_user()
 
+    # obtains form inputs and fulfills login requirements
     if request.form:
         email = request.form.get("email")
         password = request.form.get("password")
@@ -57,7 +66,7 @@ def crud_login():
 
         # pass in the name of the logged in user so it can be shown
         if login(email, password, remember_me, duration):       # zero index [0] used as email is a tuple
-            return redirect(url_for('crud.crud', username=str(current_user.name)))
+            return redirect(url_for('crud.crud', username=get_login_username()))
 
     # if not logged in, show the login page
     return render_template("login.html")
@@ -81,7 +90,7 @@ def crud_authorize():
             print("Please provide matching passwords")
             return render_template("authorize.html")
         if authorize(user_name, email, password1, phone_number):    
-            return redirect(url_for('crud.crud_login'))
+            return redirect(url_for('crud.crud', username=get_login_username()))
     # show the auth user page if the above fails for some reason
     return render_template("authorize.html")
 
@@ -103,7 +112,7 @@ def create():
             request.form.get("phone")
         )
         po.create()
-    return redirect(url_for('crud.crud', username=str(current_user.name)))
+    return redirect(url_for('crud.crud', username=get_login_username()))
 
 
 # CRUD read
@@ -129,7 +138,7 @@ def update():
         po = user_by_id(userid)
         if po is not None:
             po.update(name)
-    return redirect(url_for('crud.crud', username=str(current_user.name)))
+    return redirect(url_for('crud.crud', username=get_login_username()))
 
 
 
@@ -142,7 +151,7 @@ def delete():
         po = user_by_id(userid)
         if po is not None:
             po.delete()
-    return redirect(url_for('crud.crud', username=str(current_user.name)))
+    return redirect(url_for('crud.crud', username=get_login_username()))
 
 
 # Search Form
