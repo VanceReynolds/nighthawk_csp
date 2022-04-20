@@ -27,9 +27,8 @@ Based on Google searching I think these require javascript to modify the html pa
 
 Link to Replit https://replit.com/@valenryanreynol/Valen-Tri-3-Work#.replit
 
-## Review Tickets
-### A bunch of reviews got deleted by mistake
+## Commits
+I am not using pull requests. Commits are made to master directly from my windows laptop or slow school laptop 
+Hope this is ok?
 
-[Week 3](https://github.com/ValenReynolds/Valen-Tri-3-Work/issues/1)
-
-[Week 4](https://github.com/ValenReynolds/Valen-Tri-3-Work/issues/2)
+https://github.com/ValenReynolds/nighthawk_csp/commits/master 
