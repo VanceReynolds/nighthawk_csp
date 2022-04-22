@@ -109,7 +109,7 @@ def user_email_mismatch(username, email):
 def authorize(name, email, password, phone):
     # HACK: Verify email not already in user by another registered user
     if user_email_mismatch(name, email):
-        print ("Email already in user by another registered user ")
+        print ("Email already in use by another registered user ")
         return False
     # check for existing user - if user email and password already registered 
     if is_user(email, password):
