@@ -1,7 +1,7 @@
 """control dependencies to support CRUD app routes and APIs"""
 import datetime
 from flask import Blueprint, render_template, request, url_for, redirect, jsonify, make_response
-from flask_login import login_required
+from flask_login import login_required, logout_user
 
 from cruddy.query import *
 
@@ -119,12 +119,11 @@ def create():
 @app_crud.route('/read/', methods=["POST"])
 def read():
     """gets userid from form and obtains corresponding data from Users table"""
-    table = []
-    if request.form:
-        userid = request.form.get("userid")
-        po = user_by_id(userid)
-        if po is not None:
-            table = [po.read()]  # placed in list for easier/consistent use within HTML
+    table = [] 
+    userid = request.form.get("userid")
+    po = user_by_id(userid)
+    if po is not None:
+        table = [po.read()]  # placed in list for easier/consistent use within HTML
     return render_template("crud.html", table=table)
 
 
@@ -132,12 +131,12 @@ def read():
 @app_crud.route('/update/', methods=["POST"])
 def update():
     """gets userid and name from form and filters and then data in  Users table"""
-    if request.form:
-        userid = request.form.get("userid")
-        name = request.form.get("name")
-        po = user_by_id(userid)
-        if po is not None:
-            po.update(name)
+
+    userid = request.form.get("userid")
+    name = request.form.get("name")
+    po = user_by_id(userid)
+    if po is not None:
+        po.update(name)
     return redirect(url_for('crud.crud', username=get_login_username()))
 
 
@@ -146,11 +145,11 @@ def update():
 @app_crud.route('/delete/', methods=["POST"])
 def delete():
     """gets userid from form delete corresponding record from Users table"""
-    if request.form:
-        userid = request.form.get("userid")
-        po = user_by_id(userid)
-        if po is not None:
-            po.delete()
+
+    userid = request.form.get("userid")
+    po = user_by_id(userid)
+    if po is not None:
+        po.delete()
     return redirect(url_for('crud.crud', username=get_login_username()))
 
 

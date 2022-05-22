@@ -1,6 +1,6 @@
 from __init__ import login_manager, db
 from cruddy.model import Users
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user
 
 
 # this is method called by frontend, it has been randomized between Alchemy and Native SQL for fun

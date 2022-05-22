@@ -44,6 +44,7 @@
                                 <th>Email</th>
                                 <th>Password</th>
                                 <th>Phone</th>
+                                <th>Notes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,6 +61,7 @@
                                 <td>{{ row['email'] }}</td>
                                 <td>{{ row['password'] | truncate(20) }}</td>
                                 <td>{{ pnf }}</td>
+                                <td>{{ row['notes'] }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -94,6 +96,7 @@
                             <th><label for="email">Email</label></th>
                             <th><label for="password">Password</label></th>
                             <th><label for="phone">Phone</label></th>
+                            <th><label for="notes">Notes</label></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,22 +105,23 @@
                             <td><input type="email" name="email" id="email" placeholder="abc@xyz.org" required></td>
                             <td><input type="password" name="password" id="password" required></td>
                             <td><input type="tel" name="phone" id="phone" pattern="[0-9]{10}" placeholder="1234567890" required></td>
-                            <td><input type="submit" value="Create"></td>
+                            <td><input type="text" name="notes" id="notes"></td>
+                            <td><input type="submit" value="Create "></td>
                         </tr>
                     </tbody>
                 </table>
-                <p id="pswError"></p>
+                <p id="pswError "></p>
             </form>
         </div>
 
     </div>
 
-    <div class="container bg-secondary py-4">
+    <div class="container bg-secondary py-4 ">
 
-        <div class="row mb-4 bg-light text-dark rounded-3">
+        <div class="row mb-4 bg-light text-dark rounded-3 ">
 
-            <div class="col-md-3">
-                <div class="p-5 mb-4 bg-light text-dark rounded-3">
+            <div class="col-md-3 ">
+                <div class="p-5 mb-4 bg-light text-dark rounded-3 ">
                     <h2>Read</h2>
                     <form method="POST" ID="read" action={{url_for( 'crud.read')}}>
                         <table id="read_table">
@@ -129,40 +133,43 @@
                                     <select name="userid" id="read_userid">
                                             <optgroup label="userid">
                                                 {% for row in table %}
-                                                    <option label="{{ row['userID'] }}">{{ row['userID'] }}</option>
+                                                    <option label="{{ row[ 'userID'] }} ">{{ row['userID'] }}</option>
                                                 {% endfor %}
                                             </optgroup>
                                         </select>
                                 </td>
-                                <td>
-                                    <input type="submit" value="Read">
-                                </td>
+                                <td><input type="submit" value="Read"></td>
                             </tr>
                         </table>
                     </form>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="p-5 mb-4 bg-light text-dark rounded-3">
+            <div class="col-md-6 ">
+                <div class="p-5 mb-4 bg-light text-dark rounded-3 ">
                     <h2>Update</h2>
-                    <form method="POST" ID="update" action={{url_for( 'crud.update')}}>
-                        <table id="update_table">
+                    <form method="POST" ID="update " action={{url_for( 'crud.update')}}>
+                        <table id="update_table ">
                             <tr>
-                                <th><label for="update_userid">ID</label></th>
-                                <th><label for="update_name">Name</label></th>
+                                <th><label for="update_userid ">ID</label></th>
+                                <th><label for="update_name ">Name</label></th>
+                                <!--- <th><label for="update_notes ">Notes</label></th>
+                                    -->
                             </tr>
                             <tr>
                                 <td>
                                     <select name="userid" id="update_userid">
                                             <optgroup label="userid">
                                                 {% for row in table %}
-                                                    <option label="{{ row['userID'] }}">{{ row['userID'] }}</option>
+                                                    <option label="{{ row[ 'userID'] }} ">{{ row['userID'] }}</option>
                                                 {% endfor %}
                                             </optgroup>
                                         </select>
                                 </td>
                                 <td><input type="text" name="name" id="update_name" required></td>
+                                <!--
+                                 <td><input type="text " name="notes " id="update_notes "></td>
+                                    -->
                                 <td><input type="submit" value="Update"></td>
                             </tr>
                         </table>
@@ -170,25 +177,25 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="p-5 mb-4 bg-light text-dark rounded-3">
+            <div class="col-md-3 ">
+                <div class="p-5 mb-4 bg-light text-dark rounded-3 ">
                     <h2>Delete</h2>
-                    <form method="POST" ID="read" action={{url_for( 'crud.delete')}}>
-                        <table id="read_table">
+                    <form method="POST" ID="delete" action={{url_for( 'crud.delete')}}>
+                        <table id="delete_table ">
                             <tr>
-                                <th><label for="delete_userid">ID</label></th>
+                                <th><label for="delete_userid ">ID</label></th>
                             </tr>
                             <tr>
                                 <td>
                                     <select name="userid" id="delete_userid">
-                                            <optgroup label="userid">
+                                            <optgroup label="userid ">
                                                 {% for row in table %}
-                                                    <option label="{{ row['userID'] }}">{{ row['userID'] }}</option>
+                                                    <option label="{{ row[ 'userID'] }} ">{{ row['userID'] }}</option>
                                                 {% endfor %}
                                             </optgroup>
                                         </select>
                                 </td>
-                                <td><input type="submit" value="Delete"></td>
+                                <td><input type="submit" value="Delete "></td>
                             </tr>
                         </table>
                     </form>
@@ -202,21 +209,21 @@
 </div>
 
 <!-- Back end SQL data definition code (SQLalchemy) -->
-<div class="container py-4">
-    <h1 id="BE-MODEL">Back End Definition Code (Model) </h1>
-    <script src="https://emgithub.com/embed.js?target=https://github.com/ValenReynolds/nighthawk_csp/blob/master/cruddy/model.py&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+<div class="container py-4 ">
+    <h1 id="BE-MODEL ">Back End Definition Code (Model) </h1>
+    <script src="https://emgithub.com/embed.js?target=https://github.com/ValenReynolds/nighthawk_csp/blob/master/cruddy/model.py&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on "></script>
 </div>
 
 <!-- Front End HTML, shows this file -->
-<div class="container py-4">
-    <h1 id="FE-VIEW">Front End HTML Code (View) </h1>
-    <script src="https://emgithub.com/embed.js?target=https://github.com/ValenReynolds/nighthawk_csp/blob/master/cruddy/templates/cruddy/crud.html&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+<div class="container py-4 ">
+    <h1 id="FE-VIEW ">Front End HTML Code (View) </h1>
+    <script src="https://emgithub.com/embed.js?target=https://github.com/ValenReynolds/nighthawk_csp/blob/master/cruddy/templates/cruddy/crud.html&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on "></script>
 </div>
 
 <!-- Back Route code -->
-<div class="container py-4">
-    <h1 id="BE-CONTROL">Back End Form Request and API Code (Control)</h1>
-    <script src="https://emgithub.com/embed.js?target=https://github.com/ValenReynolds/nighthawk_csp/blob/master/cruddy/app_crud.py&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+<div class="container py-4 ">
+    <h1 id="BE-CONTROL ">Back End Form Request and API Code (Control)</h1>
+    <script src="https://emgithub.com/embed.js?target=https://github.com/ValenReynolds/nighthawk_csp/blob/master/cruddy/app_crud.py&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on "></script>
 </div>
 
 {% endblock %}
