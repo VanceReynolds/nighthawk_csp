@@ -2,7 +2,7 @@ from flask import render_template
 from __init__ import app
 
 from starter.starter import app_starter
-from algorithm.algorithm import app_algorithm
+from algorithm.algorithms import app_algorithm
 from api.webapi import app_api
 from cruddy.app_crud import app_crud
 from cruddy.app_crud_api import app_crud_api

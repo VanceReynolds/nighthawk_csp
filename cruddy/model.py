@@ -1,5 +1,7 @@
 """ database dependencies to support Users db examples """
 from __init__ import db
+from alembic import op
+import sqlalchemy as sa
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -21,11 +23,12 @@ class Users(UserMixin, db.Model):
     phone = db.Column(db.String(255), unique=False, nullable=False)
 
     # constructor of a User object, initializes of instance variables within object
-    def __init__(self, name, email, password, phone):
+    def __init__(self, name, email, password, phone, notes):
         self.name = name
         self.email = email
         self.set_password(password)
         self.phone = phone
+        self.notes = notes
 
     # CRUD create/add a new record to the table
     # returns self or None on error
@@ -39,6 +42,11 @@ class Users(UserMixin, db.Model):
             db.session.remove()
             return None
 
+    # extend database adding a new 'notes' column using alembic 
+    # see https://alembic.sqlalchemy.org/en/latest/tutorial.html#create-a-migration-script
+    def upgrade_notes():
+        op.add_column('notes', sa.Column('last_transaction_date', sa.DateTime))
+        
     # CRUD read converts self to dictionary
     # returns dictionary
     def read(self):

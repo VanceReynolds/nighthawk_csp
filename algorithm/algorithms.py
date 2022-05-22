@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, url_for, redirect, jsonif
 from flask_login import login_required
 from cruddy.app_crud import app_crud
 
-from .fibonacci import Fibonacci
+from algorithm.fibonacci import Fibonacci
 from .palindrome import Palindrome
 
 # blueprint defaults https://flask.palletsprojects.com/en/2.0.x/api/#blueprint-objects

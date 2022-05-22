@@ -109,7 +109,8 @@ def create():
             request.form.get("name"),
             request.form.get("email"),
             request.form.get("password"),
-            request.form.get("phone")
+            request.form.get("phone"), 
+            request.form.get("notes")
         )
         po.create()
     return redirect(url_for('crud.crud', username=get_login_username()))

@@ -1,6 +1,5 @@
 """Fibonacci algorithm contained within a class """
 
-
 class Fibonacci:
     """Initializer of class takes series parameter and returns Class Objectg"""
     def __init__(self, series):
