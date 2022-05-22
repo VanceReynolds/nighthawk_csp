@@ -135,9 +135,10 @@ def update():
 
     userid = request.form.get("userid")
     name = request.form.get("name")
+    notes = request.form.get("notes")
     po = user_by_id(userid)
     if po is not None:
-        po.update(name)
+        po.update(name, "", "", notes)
     return redirect(url_for('crud.crud', username=get_login_username()))
 
 
