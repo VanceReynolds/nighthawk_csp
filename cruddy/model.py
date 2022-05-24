@@ -1,8 +1,33 @@
 """ database dependencies to support Users db examples """
 from __init__ import db
+from __init__ import dbURI
+from alembic import op
+import sqlalchemy as sa
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy import engine_from_config
+from sqlalchemy.engine import reflection
+from sqlalchemy import create_engine
+
+# check if a column exists in the database and if it does return True, else return False and add the column
+def _table_has_column(table, column):
+   # config = db.get_context().config
+   # engine = engine_from_config(config.get_section(config.config_ini_section), prefix='sqlalchemy.')
+    engine = create_engine(dbURI)
+    insp = reflection.Inspector.from_engine(engine)
+    has_column = False
+    for col in insp.get_columns(table):
+        if column not in col['name']:
+            continue
+        has_column = True
+    return has_column
+
+# extend database adding a new 'notes' column using alembic 
+# see https://alembic.sqlalchemy.org/en/latest/tutorial.html#create-a-migration-script
+def add_column(column_name):
+    op.add_column(column_name, sa.Column('last_transaction_date', sa.DateTime))
+        
 
 
 # Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along
@@ -19,25 +44,16 @@ class Users(UserMixin, db.Model):
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
     phone = db.Column(db.String(255), unique=False, nullable=False)
+    # must allow this to be Null since it was added before data existed
+    notes = db.Column(db.String(255), unique=False, nullable=True)
 
     # constructor of a User object, initializes of instance variables within object
-    def __init__(self, name, email, password, phone):
+    def __init__(self, name, email, password, phone, notes):
         self.name = name
         self.email = email
         self.set_password(password)
         self.phone = phone
-
-    # CRUD create/add a new record to the table
-    # returns self or None on error
-    def create(self):
-        try:
-            # creates a person object from Users(db.Model) class, passes initializers
-            db.session.add(self)  # add prepares to persist person object to Users table
-            db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
-            return self
-        except IntegrityError:
-            db.session.remove()
-            return None
+        self.notes = notes
 
     # CRUD read converts self to dictionary
     # returns dictionary
@@ -48,19 +64,39 @@ class Users(UserMixin, db.Model):
             "email": self.email,
             "password": self.password,
             "phone": self.phone,
+            "notes": self.notes,
             "query": "by_alc"  # This is for fun, a little watermark
         }
 
+    # CRUD create/add a new record to the table
+    # returns self or None on error
+    def create(self):
+        try:
+            # creates a person object from Users(db.Model) class, passes initializers
+            if _table_has_column('users', 'notes') == False:
+                op.add_column('notes', sa.Column('last_transaction_date', sa.DateTime))
+
+            db.session.add(self)  # add prepares to persist person object to Users table
+            db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
+            return self
+        except IntegrityError:
+            db.session.remove()
+            return None
+
+
+
     # CRUD update: updates users name, password, phone
     # returns self
-    def update(self, name="", password="", phone=""):
+    def update(self, name, password, phone, note):
         """only updates values with length"""
-        if len(name) > 0:
+        if name and len(name) > 0:
             self.name = name
-        if len(password) > 0:
+        if password and len(password) > 0:
             self.set_password(password)
-        if len(phone) > 0:
+        if phone and len(phone) > 0:
             self.phone = phone
+        if note and len(note) > 0:
+            self.notes = note
         db.session.commit()
         return self
 
