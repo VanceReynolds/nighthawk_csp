@@ -17,6 +17,14 @@ https://github.com/ValenReynolds/nighthawk_csp/wiki/TT3-Assignment
 * Hack #9 Added login/logout to navbar
 * Hack #10 Automatically log out previously logged in user at the login screen
 * Hack #11 Identify "anonymous" username on CRUD Page if no longer logged in
+* Hack #12 Update now allows phone number, name, email to be updated with better styling of form
+* Hack #13 Database has a new field notes, table supports notes view
+* Hack #14 Create now supports creating new users with a "notes" entry
+* Hack #15 Update supports new "notes" field
+
+## Upload Project Addition
+* Hack #1 Add the content.html, app_content.py to project. Create a Blueprint() for app_content and added to main.py. Add "Load" to navbar
+** Once a user logs in they can now use the upload feature we were given to start
 
 ## Future Work
 Based on Google searching I think these require javascript to modify the html pages? Need some help.
