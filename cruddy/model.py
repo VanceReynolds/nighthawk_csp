@@ -87,7 +87,7 @@ class Users(UserMixin, db.Model):
 
     # CRUD update: updates users name, password, phone
     # returns self
-    def update(self, name, password, phone, note):
+    def update(self, name, password, phone, note, email):
         """only updates values with length"""
         if name and len(name) > 0:
             self.name = name
@@ -97,6 +97,8 @@ class Users(UserMixin, db.Model):
             self.phone = phone
         if note and len(note) > 0:
             self.notes = note
+        if email and len(email) > 0:
+            self.email = email
         db.session.commit()
         return self
 
