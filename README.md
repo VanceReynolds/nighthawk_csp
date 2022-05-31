@@ -23,8 +23,10 @@ https://github.com/ValenReynolds/nighthawk_csp/wiki/TT3-Assignment
 * Hack #15 Update supports new "notes" field
 
 ## Upload Project Addition
-* Hack #1 Add the content.html, app_content.py to project. Create a Blueprint() for app_content and added to main.py. Add "Load" to navbar
-** Once a user logs in they can now use the upload feature we were given to start
+* https://github.com/nighthawkcoders/nighthawk_csp/wiki/Tri-3:-Tech-Talk-Week-10:-Uploading-content-to-a-Web-Site
+* 
+* Hack #0 Add the upload.html, app_content.py to project. Create a Blueprint() for app_content and added to main.py. Add "Upload" to navbar
+** Once a user logs in they can now use the upload page we were given to start
 
 ## Future Work
 Based on Google searching I think these require javascript to modify the html pages? Need some help.
