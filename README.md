@@ -21,7 +21,8 @@ https://github.com/ValenReynolds/nighthawk_csp/wiki/TT3-Assignment
 * Hack #13 Database has a new field notes, table supports notes view
 * Hack #14 Create now supports creating new users with a "notes" entry
 * Hack #15 Update feature on crud.html added new "notes" field
-* https://www.loom.com/share/276fcc837b484d069500fad6b5771b0a Video
+* https://www.loom.com/share/276fcc837b484d069500fad6b5771b0a 
+
 @app_crud.route('/update/', methods=["POST"])
 def update():
     """gets userid and name from form and filters and then data in  Users table"""
