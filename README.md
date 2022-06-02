@@ -22,6 +22,20 @@ https://github.com/ValenReynolds/nighthawk_csp/wiki/TT3-Assignment
 * Hack #14 Create now supports creating new users with a "notes" entry
 * Hack #15 Update supports new "notes" field
 
+@app_crud.route('/update/', methods=["POST"])
+def update():
+    """gets userid and name from form and filters and then data in  Users table"""
+
+    userid = request.form.get("userid")
+    name = request.form.get("name")
+    phone = request.form.get("phone")
+    email = request.form.get("email")
+    notes = request.form.get("notes")
+    po = user_by_id(userid)
+    if po is not None:
+        po.update(name, "", phone, notes, email)
+    return redirect(url_for('crud.crud', username=get_login_username()))
+
 ## Upload Project Addition
 * https://github.com/nighthawkcoders/nighthawk_csp/wiki/Tri-3:-Tech-Talk-Week-10:-Uploading-content-to-a-Web-Site
 * 
