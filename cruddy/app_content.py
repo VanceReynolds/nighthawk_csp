@@ -1,12 +1,15 @@
 import logging
 import os
+
+import boto3
+
 from __init__ import app
-from flask import Blueprint, abort, render_template, request, redirect, url_for
-from flask_login import login_required, current_user
+from botocore.exceptions import ClientError
+from flask import Blueprint, abort, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
+
 from cruddy.Filestore import Filestore
-
-
 from cruddy.query import user_by_id
 
 # blueprint defaults https://flask.palletsprojects.com/en/2.0.x/api/#blueprint-objects
@@ -109,6 +112,10 @@ def upload():
             request.form.get("notes")
         )
         po.create() 
+
+        # upload to S3 server
+        upload_s3_file (fo.filename, 'gid-requests', 'gid-requests_2022_06_06')
+
         return redirect(url_for("content.content", table=filespace_all(), user=user))
 
        # files_uploaded.insert(0, url_for('static', filename='uploads/' + fo.filename))
@@ -119,3 +126,35 @@ def upload():
         # pass
     # reload content page
     return redirect(url_for('content.content'))
+
+
+def upload_s3_file(file_name, bucket, object_name=None):
+    """Upload a file to an S3 bucket
+
+    :param file_name: File to upload
+    :param bucket: Bucket to upload to
+    :param object_name: S3 object name. If not specified then file_name is used
+    :return: True if file was uploaded, else False
+    s3 = boto3.client('s3')
+with open("FILE_NAME", "rb") as f:
+    s3.upload_fileobj(f, "BUCKET_NAME", "OBJECT_NAME")
+
+s3.upload_file(
+    'FILE_NAME', 'BUCKET_NAME', 'OBJECT_NAME',
+    ExtraArgs={'Metadata': {'mykey': 'myvalue'}}
+)
+    """
+
+    # If S3 object_name was not specified, use file_name
+    if object_name is None:
+        object_name = os.path.basename(file_name)
+
+    # Upload the file
+    s3_client = boto3.client('s3', region_name = 'us-west-2')
+    try:
+        response = s3_client.upload_file(file_name, bucket, object_name)
+    except ClientError as e:
+        logging.error(e)
+        return False
+    return True
+
