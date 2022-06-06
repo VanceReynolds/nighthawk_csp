@@ -41,9 +41,9 @@
                         <tr>
                             <td>{{ row['userID'] }}</td>
                             <td>
-                                <image s.rc="{{ row.filename }}" width="100px"></image>
+                                <image src="{{ row ['name'] }}" width="100px"></image>
                             </td>
-                            <td>{{ row.filename }}</td>
+                            <td>{{ row['name'] }}</td>
                             <td>{{ row['notes'] }}</td>
                         </tr>
                         {% endfor %}
