@@ -27,6 +27,7 @@
                     <tbody>
                         <tr>
                             <td><input type="file" id="filename" name="filename" /></td>
+                            <td>Note <input type="text" id="notes" name="notes" /></td>
                             <td><input type="submit" value="Upload"></td>
                         </tr>
                     </tbody>
@@ -41,7 +42,7 @@
                         <tr>
                             <td>{{ row['userID'] }}</td>
                             <td>
-                                <image src="{{ row ['name'] }}" width="100px"></image>
+                                <image src="{{row['name']}}" width="100px"></image>
                             </td>
                             <td>{{ row['name'] }}</td>
                             <td>{{ row['notes'] }}</td>
