@@ -105,7 +105,7 @@ def upload():
         fo.save(secure_name)
     
         po = Filestore(
-            secure_name, 
+            fo.filename, 
             request.form.get("notes")
         )
         po.create() 
