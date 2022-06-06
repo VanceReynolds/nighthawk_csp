@@ -80,6 +80,10 @@ def filespace_all():
 @login_required
 def upload():
     try:
+        
+    # grab user object (uo) based on current login
+        uo = user_by_id(current_user.userID)
+        user = uo.read()  # extract user record (Dictionary)
         logging.basicConfig(level=logging.DEBUG, filename='nighthawk_csp.log')
 
         # grab file object (fo) from user input
@@ -97,11 +101,17 @@ def upload():
       # S3 requires we use a secure filename - we need this for later
       # right now secure_filename is returning nothing so we are skipping it (useless)
       #  secure_name = os.path.join(app.config['Secure this'], secure_filename(fo.filename))
-        secure_name = './static/uploads/' + fo.filename
-        
+        secure_name = './static/uploads/' + fo.filename    
         fo.save(secure_name)
-        # ... add to files_uploaded to give feedback of success on HTML page
-        files_uploaded.insert(0, url_for('static', filename='uploads/' + fo.filename))
+    
+        po = Filestore(
+            secure_name, 
+            request.form.get("notes")
+        )
+        po.create() 
+        return redirect(url_for("content.content", table=filespace_all(), user=user))
+
+       # files_uploaded.insert(0, url_for('static', filename='uploads/' + fo.filename))
     except Exception as ex:
         print (ex)
         # errors handled, but specific errors are not messaged to user
