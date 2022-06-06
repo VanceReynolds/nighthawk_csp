@@ -1,8 +1,11 @@
+import logging
 import os
 from __init__ import app
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, abort, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
+from cruddy.Filestore import Filestore
+
 
 from cruddy.query import user_by_id
 
@@ -56,27 +59,53 @@ def content():
     # grab user object (uo) based on current login
     uo = user_by_id(current_user.userID)
     user = uo.read()  # extract user record (Dictionary)
-    # load content page
-    return render_template('content.html', user=user, files=files_uploaded)
+    # load content page passing user and list of uploaded files
+    
+    return render_template("content.html", table=filespace_all(), user=user)
+   # return render_template('content.html', user=user, files=files_uploaded)
 
+ALLOWED_EXTENSIONS = set(['csv','jpg','png','gif','mp4','csv'])
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# SQLAlchemy extract all users from database
+def filespace_all():
+    table = Filestore.query.all()
+    json_ready = [peep.read() for peep in table]
+    return json_ready
 
 # Notes create/add
 @app_content.route('/upload/', methods=["POST"])
 @login_required
 def upload():
     try:
+        logging.basicConfig(level=logging.DEBUG, filename='nighthawk_csp.log')
+
         # grab file object (fo) from user input
         # The fo variable holds the submitted file object. This is an instance of class FileStorage, which Flask imports from Werkzeug.
         fo = request.files['filename']
+
+        # throw 400 error if file type not supported
+        if not allowed_file(fo.filename):
+            abort (400)
+            
         # save file to location defined in __init__.py
         # ... os.path uses os specific pathing for web server
         # ... secure_filename checks for integrity of name for operating system. Pass it a filename and it will return a secure version of it.
       
-        fo.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(fo.filename)))
+      # S3 requires we use a secure filename - we need this for later
+      # right now secure_filename is returning nothing so we are skipping it (useless)
+      #  secure_name = os.path.join(app.config['Secure this'], secure_filename(fo.filename))
+        secure_name = './static/uploads/' + fo.filename
+        
+        fo.save(secure_name)
         # ... add to files_uploaded to give feedback of success on HTML page
         files_uploaded.insert(0, url_for('static', filename='uploads/' + fo.filename))
-    except:
+    except Exception as ex:
+        print (ex)
         # errors handled, but specific errors are not messaged to user
-        pass
+        logging.exception("Error:")
+        # pass
     # reload content page
     return redirect(url_for('content.content'))
