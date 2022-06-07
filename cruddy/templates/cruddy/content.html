@@ -51,6 +51,32 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="col-md-3 ">
+                <div class="p-5 mb-4 bg-light text-dark rounded-3 ">
+                    <h2>Delete</h2>
+                    <form method="POST" ID="delete" action={{url_for( 'content.delete')}}>
+                        <table id="delete_table ">
+                            <tr>
+                                <th><label for="delete_userid ">ID</label></th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select name="userid" id="delete_userid">
+                                            <optgroup label="userid ">
+                                                {% for row in table %}
+                                                    <option label="{{ row[ 'userID'] }} ">{{ row['userID'] }}</option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        </select>
+                                </td>
+                                <td><input type="submit" value="Delete "></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
