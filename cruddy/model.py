@@ -48,7 +48,7 @@ class Users(UserMixin, db.Model):
     notes = db.Column(db.String(255), unique=False, nullable=True)
 
     # constructor of a User object, initializes of instance variables within object
-    def __init__(self, name, email, password, phone, notes):
+    def __init__(self, name, email, password, phone, notes=""):
         self.name = name
         self.email = email
         self.set_password(password)
@@ -87,7 +87,7 @@ class Users(UserMixin, db.Model):
 
     # CRUD update: updates users name, password, phone
     # returns self
-    def update(self, name, password, phone, note, email):
+    def update(self, name, email, password, phone, note=""):
         """only updates values with length"""
         if name and len(name) > 0:
             self.name = name
