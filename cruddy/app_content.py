@@ -9,7 +9,7 @@ from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 
-from cruddy.Filestore import Filestore
+from cruddy.Filestore import Filestore, filestore_by_id
 from cruddy.query import user_by_id
 
 # blueprint defaults https://flask.palletsprojects.com/en/2.0.x/api/#blueprint-objects
@@ -67,7 +67,7 @@ def content():
     return render_template("content.html", table=filespace_all(), user=user)
    # return render_template('content.html', user=user, files=files_uploaded)
 
-ALLOWED_EXTENSIONS = set(['csv','jpg','png','gif','mp4','csv'])
+ALLOWED_EXTENSIONS = set(['csv','jpg','png','gif','mp4'])
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -77,6 +77,21 @@ def filespace_all():
     table = Filestore.query.all()
     json_ready = [peep.read() for peep in table]
     return json_ready
+
+
+# Content delete
+@app_content.route('/delete/', methods=["POST"])
+def delete():
+    """gets userid from form delete corresponding record from Users table"""
+
+    userid = request.form.get("userid")
+    fs = filestore_by_id(userid)
+    if fs is not None:
+        fs.delete() 
+        return redirect(url_for("content.content", table=filespace_all()))
+    else:
+        return redirect(url_for('content.content'))
+
 
 # Notes create/add
 @app_content.route('/upload/', methods=["POST"])
