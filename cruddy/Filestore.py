@@ -70,6 +70,10 @@ class Filestore(UserMixin, db.Model):
         return self.userID
 
 
+"""finds Filestore row in table matching id """
+def filestore_by_id(id):
+    return Filestore.query.filter_by(userID=id).first()
+
 def upload_model_tester():
     print("--------------------------")
     print("Seed Data for Table: filestore")
