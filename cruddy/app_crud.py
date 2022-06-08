@@ -2,6 +2,7 @@
 import datetime
 from flask import Blueprint, render_template, request, url_for, redirect, jsonify, make_response
 from flask_login import login_required, logout_user
+from cruddy.Filestore import upload_model_printer, upload_model_tester
 
 from cruddy.query import *
 
@@ -46,6 +47,9 @@ def get_login_username():
 # if login url, show phones table only
 @app_crud.route('/login/', methods=["GET", "POST"])
 def crud_login():
+    
+    #upload_model_tester()  # builds model of Users
+    #upload_model_printer()
     # if there is a user logged in when we get here, log them out
     if current_user is not None and current_user.is_anonymous == False:
         logout_user()
@@ -89,7 +93,7 @@ def crud_authorize():
         if (password1 != password2):
             print("Please provide matching passwords")
             return render_template("authorize.html")
-        if authorize(user_name, email, password1, phone_number):    
+        if (user_name, email, password1, phone_number):    
             return redirect(url_for('crud.crud', username=get_login_username()))
     # show the auth user page if the above fails for some reason
     return render_template("authorize.html")
@@ -125,6 +129,7 @@ def read():
     po = user_by_id(userid)
     if po is not None:
         table = [po.read()]  # placed in list for easier/consistent use within HTML
+    # this render() passes a table with a single user row to the crud.html
     return render_template("crud.html", table=table)
 
 
@@ -140,7 +145,7 @@ def update():
     notes = request.form.get("notes")
     po = user_by_id(userid)
     if po is not None:
-        po.update(name, "", phone, notes, email)
+        po.update(name, email, "", phone, notes)
     return redirect(url_for('crud.crud', username=get_login_username()))
 
 
