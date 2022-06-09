@@ -21,6 +21,10 @@ https://github.com/ValenReynolds/nighthawk_csp/wiki/TT3-Assignment
 * Hack #13 Database has a new field notes, table supports notes view
 * Hack #14 Create now supports creating new users with a "notes" entry
 * Hack #15 Update feature on crud.html added new "notes" field
+* Hack #16 Upload file feature for content.html supports all requested file types
+* Hack #17 Extended Upload to have database support using Filestore.py and filestore database model
+* Hack #18 Upload files to Amazon S3 in app_content.py 
+* Hack #19 Delete feature for content.html so I can keep the table cleaned up
 * https://www.loom.com/share/276fcc837b484d069500fad6b5771b0a 
 
 @app_crud.route('/update/', methods=["POST"])
