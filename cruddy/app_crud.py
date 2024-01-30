@@ -13,13 +13,6 @@ app_crud = Blueprint('crud', __name__,
                      static_folder='static',
                      static_url_path='static')
 
-""" Blueprint is established to isolate Application control code for CRUD operations, key features:
-    1.) 'Users' table control methods, controls relationship between User Actions and Database Model
-    2.) Control methods are achieved using app routes for each CRUD operations
-    3.) login required to restrict CRUD operations to identified users
-"""
-
-
 # If you decorate a view(route) with this, it will ensure that the current user is logged in and authenticated before calling the actual view. 
 # (If they are not, it calls the LoginManager.unauthorized callback.). 
 # Use this example for Hack #3.

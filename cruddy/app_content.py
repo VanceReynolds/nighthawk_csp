@@ -1,10 +1,10 @@
 import logging
 import os
 
-import boto3
+''' import boto3 '''
 
 from __init__ import app
-from botocore.exceptions import ClientError
+''' from botocore.exceptions import ClientError '''
 from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
