@@ -85,6 +85,13 @@ def login(email, password, remember, duration):
     else:  # default condition is any failure, most likely existing user and password or email mismatch
         print ("Invalid username and/or password")
         return False
+    
+def login_as_admin(email, password, remember, duration):
+    if (login(email, password, remember, duration)):
+        if (user_by_email(email).name == "admin"):
+            return True
+    
+    return False
 
 
 # this function is needed for Flask-Login to work.

@@ -2,22 +2,18 @@ from flask import render_template
 from __init__ import app
 
 from cruddy.app_starter import app_starter
-from algorithm.algorithms import app_algorithm
 from api.webapi import app_api
 from cruddy.app_crud import app_crud
 from cruddy.app_content import app_content
 from cruddy.app_crud_api import app_crud_api
 from frontend.frontend import app_frontend
-from y2022 import app_y2022
 
 app.register_blueprint(app_starter)
-app.register_blueprint(app_algorithm)
 app.register_blueprint(app_api)
 app.register_blueprint(app_crud)
 app.register_blueprint(app_content)
 app.register_blueprint(app_crud_api)
 app.register_blueprint(app_frontend)
-app.register_blueprint(app_y2022)
 
 
 @app.route('/')

@@ -14,4 +14,5 @@ db = SQLAlchemy(app)
 Migrate(app, db)
 # Setup LoginManager object (app)
 login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
 login_manager.init_app(app)

@@ -1,6 +1,6 @@
 """control dependencies to support CRUD app routes and APIs"""
 import datetime
-from flask import Blueprint, render_template, request, url_for, redirect, jsonify, make_response
+from flask import Blueprint, render_template, request, url_for, redirect, jsonify, make_response, flash
 from flask_login import login_required, logout_user
 from cruddy.Filestore import upload_model_printer, upload_model_tester
 
@@ -61,11 +61,16 @@ def crud_login():
             remember_me = True
             duration = datetime.timedelta(days=1)
 
+        # if admin login redirect to the admin page
+        if login_as_admin(email, password, remember_me, duration):
+            return redirect(url_for('crud_api.crud_api', username=get_login_username()))
+
         # pass in the name of the logged in user so it can be shown
         if login(email, password, remember_me, duration):       # zero index [0] used as email is a tuple
             return redirect(url_for('crud.crud', username=get_login_username()))
 
     # if not logged in, show the login page
+    flash('Please check your login details and try again.')
     return render_template("login.html")
 
 # Note this code is bad. It is handling PII (username, password, phone, email) without encryption
